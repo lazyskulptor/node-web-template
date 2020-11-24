@@ -22,11 +22,11 @@ const configureI18n = (): I18nInit => {
     queryParameter: 'lang',
     cookie: 'web_locale'
   };
-  
+
   if (process.env.NODE_ENV !== 'production') {
     opt.autoReload = true;
   }
-  
+
   I18n.configure(opt);
   return I18n.init;
 }
