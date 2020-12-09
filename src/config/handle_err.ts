@@ -18,4 +18,4 @@ const errHandler: erroHandelrFn = (err, req, res, next) => {
 type noPageHandelrFn = (req: express.Request, res:express.Response) => void;
 const notFoundHandler: noPageHandelrFn = (req, res) => {
   res.status(404).send('Page Not Found');
-}
+};

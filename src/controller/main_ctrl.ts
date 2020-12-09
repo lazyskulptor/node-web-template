@@ -10,5 +10,3 @@ router.get("/", (req: express.Request, res: express.Response): void => {
 router.get("/rest", (req: express.Request, res: express.Response): void => {
   res.send("hello");
 });
-
-
