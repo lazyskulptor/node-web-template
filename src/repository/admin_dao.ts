@@ -1,4 +1,4 @@
-import Admin from "../model/user";
+import Admin, {User} from "../model/user";
 import  {DataTypes, Model, Optional} from "sequelize";
 import {Role} from "../model/enums/roles";
 import conn from "./conn";

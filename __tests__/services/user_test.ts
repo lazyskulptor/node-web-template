@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import Admin from "../../src/model/user";
 import {Role} from "../../src/model/enums/roles";
 import * as svc from "../../src/service/user_svc";
-import * as dao from "../../src/repository/user_dao";
+import * as dao from "../../src/repository/admin_dao";
 import {makeid} from "../../src/service/utils/string_utils";
 
 dotenv.config();

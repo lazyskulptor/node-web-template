@@ -1,5 +1,5 @@
 import Admin from "../model/user";
-import * as dao from "../repository/user_dao";
+import * as dao from "../repository/admin_dao";
 import Pwd, {PwdType} from "./utils/pwd_encrypt";
 const pwd = Pwd(PwdType.BCRYPT);
 
