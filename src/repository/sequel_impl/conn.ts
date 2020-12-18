@@ -21,7 +21,7 @@ const conn = new Sequelize(db, username, pwd, dbOpt);
 (async () => {
   try {
     await conn.authenticate();
-    console.info('Connection has been established successfully.');
+    console.info('DB Connection has been established successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }

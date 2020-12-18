@@ -5,6 +5,8 @@ import * as I18n from "i18n";
 import ConfigurationOptions = i18n.ConfigurationOptions;
 import coolkieParser from "cookie-parser";
 import session from 'express-session';
+import initPassport from '../service/adapter/passport'
+import * as adminService from '../service/admin_svc';
 
 const SESSION_NAME = 'web_session';
 const SESSION_SECRET = 'M8johDaJqAqm';
@@ -14,6 +16,7 @@ export = (app : express.Application) : void => {
   app.set("views", path.join(__dirname, "../views"));
   app.set("view engine", "ejs");
 
+  initPassport(adminService.login);
   app.use(configureI18n());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(wrapper);

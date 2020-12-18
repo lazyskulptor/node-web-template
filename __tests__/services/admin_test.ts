@@ -18,9 +18,9 @@ describe('admin service test', () => {
   
     const userId = await svc.createAdmin(user);
     user.password = pwd;
-    const isPwdMatch = await svc.login(user);
+    const isPwdMatch = await svc.login(user.username, user.password);
   
-    expect(isPwdMatch).toBe(true);
+    expect(isPwdMatch.isSuccess).toBe(true);
     usrdao().deleteById(userId);
   });
   

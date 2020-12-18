@@ -22,8 +22,6 @@ export default function(app: express.Application) {
 }
 
 const wrapper = (req: express.Request, res: express.Response, next: ()=>void) => {
-  // TODO: 2020-12-16 validate request whether request accept only json.
-  console.log(req.session);
   if (!validateAccept(req.headers)) {
     res.status(406).json({result: 'not acceptable request'});
   } else {
