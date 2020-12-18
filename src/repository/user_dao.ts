@@ -15,7 +15,7 @@ export interface UserInterface<U extends User> {
   create: (userList: U[]) => Promise<number>;
   updateAll: (user: U) => Promise<[number, U[]]>;
   deleteById: (userId: number) => Promise<number>,
-  
+
   findByUsername: (username: string) => Promise<U>,
   findOne: (user: U) => Promise<U>;
   findByPk: (userId: number) => Promise<U>;
