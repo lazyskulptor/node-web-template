@@ -7,11 +7,30 @@ export default function initPassport(initCb: InitCb): void {
     initCb(username, password)
       .then(result => {
         if(result.isSuccess) {
-          done(null, true);
+          console.log(result.user.username);
+          done(null, result.user.username);
         } else {
           done(null, false, {message: result.message});
         }
       })
-      .catch(err => done(err));
+      .catch(err => {
+        console.error(err);
+        done(err);
+      });
   }));
 }
+
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+// passport.deserializeUser(function (user, done) {
+//   //If using Mongoose with MongoDB; if other you will need JS specific to that schema.
+//   User.findById(user.id, function (err, user) {
+//     done(err, user);
+//   });
+// });

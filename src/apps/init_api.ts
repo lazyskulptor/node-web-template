@@ -4,6 +4,7 @@ import apiRoute from "../controller/rest";
 import secure, {SecType} from "../config/secure";
 import handleErr, {HandlerType} from "../config/handle_err";
 import {IncomingHttpHeaders} from "http";
+import session from "../config/create-session";
 
 const api: express.Application = express();
 
@@ -15,6 +16,7 @@ export default function(app: express.Application) {
 
   api.use(bodyParser.json());
   api.use(wrapper);
+  api.use(session);
   apiRoute(api);
   secure(app, SecType.API);
   app.use('/rest/v0', api);

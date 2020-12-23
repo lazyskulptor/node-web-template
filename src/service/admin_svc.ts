@@ -7,7 +7,8 @@ const pwd = Pwd(PwdType.BCRYPT);
 
 interface LoginResult {
   isSuccess: boolean,
-  message?: string
+  message?: string,
+  user?: Admin
 }
 
 export async function login(username: string, password: string): Promise<LoginResult> {
@@ -19,11 +20,11 @@ export async function login(username: string, password: string): Promise<LoginRe
   if (!admin) {
     result.isSuccess = false;
     result.message = 'Incorrect username.';
-  }
-
-  if (!await pwd.isMatch(password, admin.password)) {
+  } else if (!await pwd.isMatch(password, admin.password)) {
     result.isSuccess = false;
     result.message = 'Incorrect Password.';
+  } else {
+    result.user = admin;
   }
   return result;
 }

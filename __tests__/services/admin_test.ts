@@ -5,6 +5,7 @@ import * as svc from "../../src/service/admin_svc";
 import usrdao from "../../src/repository/user_dao";
 import {makeid} from "../../src/service/utils/string_utils";
 import initDao from "../../src/repository/setting_db_dao";
+import {initAdmin} from "../utils/factory";
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ describe('admin service test', () => {
   
     const userId = await svc.createAdmin(user);
     user.password = pwd;
-    const isPwdMatch = await svc.login(user.username, user.password);
+    const isPwdMatch = await svc.login(user.username, pwd);
   
     expect(isPwdMatch.isSuccess).toBe(true);
     usrdao().deleteById(userId);
@@ -77,15 +78,4 @@ const expectAdmin = async (res: Admin, exp: Admin) => {
   expect(res.roles[0]).toBe(Role.SUPER_W);
   expect(res.username).toBe(exp.username);
   await usrdao().deleteById(res.userId);
-};
-
-const initAdmin = (): Admin => {
-  return {
-    username: makeid(16),
-    password: 'test_password',
-    firstName: 'first',
-    lastName: 'last',
-    email: 'test@test.net',
-    roles: [Role.SUPER_W, Role.SUPER_R],
-  };
 };

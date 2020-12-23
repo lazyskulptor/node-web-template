@@ -2,42 +2,39 @@ import express from "express";
 import path from "path";
 import bodyParser from "body-parser";
 import * as I18n from "i18n";
-import ConfigurationOptions = i18n.ConfigurationOptions;
 import coolkieParser from "cookie-parser";
-import session from 'express-session';
+import sessionStore from "./create-session";
 import initPassport from '../service/adapter/passport'
 import * as adminService from '../service/admin_svc';
+import flash from "connect-flash";
+import passport from "passport";
 
-const SESSION_NAME = 'web_session';
-const SESSION_SECRET = 'M8johDaJqAqm';
 const MAX_AGE = 24 * 60 * 6 * 1000;
 
-export = (app : express.Application) : void => {
+export default (app : express.Application) : void => {
   app.set("views", path.join(__dirname, "../views"));
   app.set("view engine", "ejs");
 
-  initPassport(adminService.login);
   app.use(configureI18n());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(wrapper);
   app.use(coolkieParser());
-  app.use(session({
-    name: SESSION_NAME,
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: MAX_AGE},
-  }));
+  app.use(sessionStore);
+  app.use(flash());
+  app.use(passport.initialize());
+  app.use(passport.session());
+  initPassport(adminService.login);
 }
 
 
 type I18nInit = (req: Express.Request, res: Express.Response, next?: () => void) => void;
 const configureI18n = (): I18nInit => {
-  const opt: ConfigurationOptions = {
+  const opt = {
     locales: ['en', 'ko'],
     directory: path.join(__dirname, '../locales'),
     queryParameter: 'lang',
-    cookie: 'web_locale'
+    cookie: 'web_locale',
+    autoReload: false
   };
 
   if (process.env.NODE_ENV !== 'production') {
