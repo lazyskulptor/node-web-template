@@ -1,5 +1,10 @@
 import passport from "passport";
 import {Strategy as LocalStrategy} from "passport-local/"
+import {RequestHandler} from "express";
+import ApiResult from "../../model/api_result";
+
+export const initedPp = passport.initialize();
+export const ppSession = passport.session();
 
 type InitCb = (username: string, password: string) => Promise<any>;
 export default function initPassport(initCb: InitCb): void {
@@ -7,7 +12,6 @@ export default function initPassport(initCb: InitCb): void {
     initCb(username, password)
       .then(result => {
         if(result.isSuccess) {
-          console.log(result.user.username);
           done(null, result.user.username);
         } else {
           done(null, false, {message: result.message});
@@ -28,9 +32,36 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
   done(null, user);
 });
-// passport.deserializeUser(function (user, done) {
-//   //If using Mongoose with MongoDB; if other you will need JS specific to that schema.
-//   User.findById(user.id, function (err, user) {
-//     done(err, user);
-//   });
-// });
+
+
+export const isSignedIn: RequestHandler = (req, res, next) => {
+  if (req.user) {
+    next();
+  } else {
+    res.redirect('/login');
+  }
+};
+
+export const isApiUser: RequestHandler = (req, res, next) => {
+  if (req.session?.passport?.user) {
+    next();
+  } else {
+    const result: ApiResult = {
+      success: false,
+      message: 'Not Authorized'
+    };
+    res.status(401).json(result);
+  }
+};
+
+export const isSessionValid: RequestHandler = (req, res, next) => {
+  if (req.session?.passport?.user) {
+    next();
+  } else {
+    const result: ApiResult = {
+      success: false,
+      message: 'Not Authorized'
+    };
+    res.status(401).json(result);
+  }
+};

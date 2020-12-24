@@ -1,9 +1,10 @@
 import express from "express";
+import {isApiUser} from "../../service/adapter/passport";
 const router = express.Router();
 
 export default router;
 
-router.get("/", (req: express.Request, res: express.Response): void => {
+router.get("/", isApiUser, (req, res): void => {
   const result = {
     success: true
   };

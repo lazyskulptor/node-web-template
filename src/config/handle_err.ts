@@ -1,4 +1,4 @@
-import express from "express";
+import express, {ErrorRequestHandler, RequestHandler} from "express";
 import Err404 from "../model/error/Err404";
 import ApiResult from "../model/api_result";
 
@@ -15,18 +15,17 @@ export default function handleErr(app: express.Application, handlerType?: Handle
   }
 }
 
-type erroHandelrFn = (err:Error, req: express.Request, res:express.Response, next: ()=>void) => void;
-const webErrHandler: erroHandelrFn = (err, req, res, next) => {
+const webErrHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (err instanceof Err404) {
-    webNotFoundHandler(req, res);
+    webNotFoundHandler(req, res, next);
   } else {
     res.status(500).send('Error');
   }
 };
 
-const apiErrHandler: erroHandelrFn = (err, req, res, next) => {
+const apiErrHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (err instanceof Err404) {
-    apiNotFoundHandler(req, res);
+    apiNotFoundHandler(req, res, next);
   } else {
     const result: ApiResult = {
       success: false,
@@ -37,12 +36,11 @@ const apiErrHandler: erroHandelrFn = (err, req, res, next) => {
 };
 
 
-type noPageHandelrFn = (req: express.Request, res:express.Response) => void;
-const webNotFoundHandler: noPageHandelrFn = (req, res) => {
+const webNotFoundHandler: RequestHandler = (req, res) => {
   res.status(404).send('Page Not Found');
 };
 
-const apiNotFoundHandler: noPageHandelrFn = (req, res) => {
+const apiNotFoundHandler: RequestHandler = (req, res) => {
   const result: ApiResult = {
     success: false,
     message: 'Page Not Found'

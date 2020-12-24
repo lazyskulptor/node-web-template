@@ -4,10 +4,9 @@ import bodyParser from "body-parser";
 import * as I18n from "i18n";
 import coolkieParser from "cookie-parser";
 import sessionStore from "./create-session";
-import initPassport from '../service/adapter/passport'
+import initPassport, {initedPp, ppSession} from '../service/adapter/passport'
 import * as adminService from '../service/admin_svc';
 import flash from "connect-flash";
-import passport from "passport";
 
 const MAX_AGE = 24 * 60 * 6 * 1000;
 
@@ -21,8 +20,8 @@ export default (app : express.Application) : void => {
   app.use(coolkieParser());
   app.use(sessionStore);
   app.use(flash());
-  app.use(passport.initialize());
-  app.use(passport.session());
+  app.use(initedPp);
+  app.use(ppSession);
   initPassport(adminService.login);
 }
 
@@ -45,7 +44,7 @@ const configureI18n = (): I18nInit => {
   return I18n.init;
 }
 
-const wrapper = (req: express.Request, res: express.Response, next: () => void): void => {
+const wrapper: express.RequestHandler = (req, res, next): void => {
   res.locals.url = req.originalUrl;
   if (req.query.lang) {
     res.cookie('web_locale', req.query.lang, {maxAge: MAX_AGE, httpOnly: true});
