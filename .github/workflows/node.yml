@@ -38,7 +38,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: node .github/scripts/db_initializer.js
       - run: npm install
+      - run: node .github/scripts/db_initializer.js
       - run: npm run build
       - run: npm run test
