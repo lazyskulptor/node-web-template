@@ -12,32 +12,33 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # The type of runner that the job will run on
-  runs-on: ubuntu-latest
+  runner-job:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
 
-  strategy:
-    matrix:
-      node-version: [14.x]
+    strategy:
+      matrix:
+        node-version: [14.x]
 
 
-  services:
-    postgres:
-      image: postgres:13-alpine
-      env:
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: secretpassword
-        POSTGRES_DB: lazyweb
-      ports:
-        - 5432:5432
-      options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    services:
+      postgres:
+        image: postgres:13-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: secretpassword
+          POSTGRES_DB: lazyweb
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-  steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: node .github/scripts/db_initializer.js
-    - run: npm install
-    - run: npm run build
-    - run: npm run test
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: node .github/scripts/db_initializer.js
+      - run: npm install
+      - run: npm run build
+      - run: npm run test
