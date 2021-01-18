@@ -4,6 +4,7 @@ if (dbType === 'mysql' || dbType === 'mariadb') {
 
 } else { //postgres
   const {Client} = require('pg');
+  const fs = require('fs');
   
   const client = new Client({
     host: 'postgres',
@@ -12,7 +13,7 @@ if (dbType === 'mysql' || dbType === 'mariadb') {
     password: 'secretpassword!!',
   });
   
-  var sql = fs.readFileSync('pg_setupe_db.sql').toString();
+  var sql = fs.readFileSync('.github/scripts/pg_setupe_db.sql').toString();
   
   client.connect((err, client, done) => {
     if(err){
