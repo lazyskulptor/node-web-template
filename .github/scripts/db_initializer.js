@@ -5,7 +5,7 @@ var pgInitializer = async () => {
   const fs = require('fs');
   
   const client = new Client({
-    host: 'postgres',
+    host: 'localhost',
     port: 5433,
     user: 'postgres',
     password: 'secretpassword',
