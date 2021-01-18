@@ -5,10 +5,10 @@ var pgInitializer = async () => {
   const fs = require('fs');
   
   const client = new Client({
-    host: '192.168.7.77',
+    host: 'postgres',
     port: 5433,
     user: 'postgres',
-    password: 'guswns1234',
+    password: 'secretpassword',
   });
   
   var sql = fs.readFileSync('.github/scripts/pg_init_database.sql');
