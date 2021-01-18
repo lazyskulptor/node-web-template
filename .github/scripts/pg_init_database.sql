@@ -236,45 +236,6 @@ ALTER TABLE ONLY public.client ALTER COLUMN user_id SET DEFAULT nextval('public.
 ALTER TABLE ONLY public."user" ALTER COLUMN user_id SET DEFAULT nextval('public.user_user_id_seq'::regclass);
 
 
---
--- Data for Name: admin; Type: TABLE DATA; Schema: public; Owner: webuser
---
-
-COPY public.admin (user_id, username, password, first_name, last_name, email, phone, auths, department) FROM stdin;
-\.
-
-
---
--- Data for Name: board; Type: TABLE DATA; Schema: public; Owner: webuser
---
-
-COPY public.board (board_id, title, content, content_type, writer, reg_time, category, last_updated) FROM stdin;
-\.
-
-
---
--- Data for Name: board_comment; Type: TABLE DATA; Schema: public; Owner: webuser
---
-
-COPY public.board_comment (comment_id, board_id, writer, comment, reg_time, parent_comment) FROM stdin;
-\.
-
-
---
--- Data for Name: client; Type: TABLE DATA; Schema: public; Owner: webuser
---
-
-COPY public.client (user_id, username, password, first_name, last_name, email, phone, last_login) FROM stdin;
-\.
-
-
---
--- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: webuser
---
-
-COPY public."user" (user_id, username, password, first_name, last_name, email, phone) FROM stdin;
-\.
-
 
 --
 -- Name: board_board_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webuser

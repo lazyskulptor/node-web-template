@@ -1,33 +1,40 @@
 const dbType= process.env.DB_TYPE;
 
-if (dbType === 'mysql' || dbType === 'mariadb') {
-
-} else { //postgres
+var pgInitializer = async () => {
   const {Client} = require('pg');
   const fs = require('fs');
   
   const client = new Client({
-    host: 'postgres',
-    port: 5432,
+    host: '192.168.7.77',
+    port: 5433,
     user: 'postgres',
-    password: 'secretpassword!!',
+    password: 'guswns1234',
   });
   
-  var sql = fs.readFileSync('.github/scripts/pg_setupe_db.sql').toString();
+  var sql = fs.readFileSync('.github/scripts/pg_init_database.sql');
+  sql = sql.toString();
   
-  client.connect((err, client, done) => {
-    if(err){
-      console.log('error: ', err);
-      process.exit(1);
-    }
-    client.query(sql, function(err, result){
-      done();
-      if(err){
-        console.log('error: ', err);
-        process.exit(1);
-      }
-      process.exit(0);
+  await client.connect();
+  
+  await client.query('CREATE USER webuser WITH PASSWORD \'test_db_password\'');
+  console.log('user is created');
+
+  await client.query('CREATE DATABASE web WITH OWNER = webuser');
+  console.log('test db is created');
+  
+  await client.query(sql);
+  console.log('db schema is set');
+  
+  process.exit(0);
+};
+
+if (dbType === 'mysql' || dbType === 'mariadb') {
+
+} else { //postgres
+  pgInitializer()
+    .catch(err => {
+      console.log(err);
+      process.exit(1)
     });
-  });
-  
 }
+
