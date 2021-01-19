@@ -11,7 +11,7 @@ export interface User {
   department?: string;
 }
 
-export default interface Admin extends User{
+export interface Admin extends User{
   roles: Role[];
 }
 
