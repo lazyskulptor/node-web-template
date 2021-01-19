@@ -40,9 +40,11 @@ const configureI18n = (): I18nInit => {
     opt.autoReload = true;
   }
 
-  I18n.configure(opt);
+  if (process.env.NODE_ENV !== 'test') {
+    I18n.configure(opt);
+  }
   return I18n.init;
-}
+};
 
 const wrapper: express.RequestHandler = (req, res, next): void => {
   res.locals.url = req.originalUrl;
@@ -50,4 +52,4 @@ const wrapper: express.RequestHandler = (req, res, next): void => {
     res.cookie('web_locale', req.query.lang, {maxAge: MAX_AGE, httpOnly: true});
   }
   next();
-}
+};

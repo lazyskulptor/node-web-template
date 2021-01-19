@@ -1,4 +1,9 @@
 import {Dialect, Options, Sequelize, Transaction} from 'sequelize';
+import dotenv from "dotenv";
+
+if (process.env.NODE_ENV === 'test') {
+  dotenv.config();
+}
 
 const dbType = process.env.DB_TYPE as Dialect || 'postgres';
 const host = process.env.DB_HOST || '127.0.0.1';
