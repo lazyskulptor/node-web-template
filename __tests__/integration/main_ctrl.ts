@@ -15,7 +15,7 @@ describe('test endpoints in main_ctrl', () => {
   });
   
   test('endpoint /', async (done) => {
-    request.get('/rest')
+    request.get('/')
       .expect(body => {
         console.log(body.text);
       })
