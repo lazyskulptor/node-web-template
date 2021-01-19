@@ -17,24 +17,24 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: admin_auth; Type: TYPE; Schema: public; Owner: webuser
+-- Name: admin_role; Type: TYPE; Schema: public; Owner: webuser
 --
 
-CREATE TYPE public.admin_auth AS ENUM (
+CREATE TYPE public.admin_role AS ENUM (
     'MANAGER:READ',
     'SUPER:READ',
     'SUPER:WRITE',
     'MANAGER:WRITE'
-);
+    );
 
 
-ALTER TYPE public.admin_auth OWNER TO webuser;
+ALTER TYPE public.admin_role OWNER TO webuser;
 
 --
--- Name: TYPE admin_auth; Type: COMMENT; Schema: public; Owner: webuser
+-- Name: TYPE admin_role; Type: COMMENT; Schema: public; Owner: webuser
 --
 
-COMMENT ON TYPE public.admin_auth IS 'kinds of auth of admin page';
+COMMENT ON TYPE public.admin_role IS 'kinds of auth of admin page';
 
 
 --
@@ -44,7 +44,7 @@ COMMENT ON TYPE public.admin_auth IS 'kinds of auth of admin page';
 CREATE TYPE public.board_content_type AS ENUM (
     'TEXT',
     'HTML'
-);
+    );
 
 
 ALTER TYPE public.board_content_type OWNER TO webuser;
@@ -58,13 +58,13 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public."user" (
-    user_id integer NOT NULL,
-    username character varying(128) NOT NULL,
-    password character varying(256) NOT NULL,
-    first_name character varying(64) NOT NULL,
-    last_name character varying(64) NOT NULL,
-    email character varying(256) NOT NULL,
-    phone character varying(32)
+                               user_id integer NOT NULL,
+                               username character varying(128) NOT NULL,
+                               password character varying(256) NOT NULL,
+                               first_name character varying(64) NOT NULL,
+                               last_name character varying(64) NOT NULL,
+                               email character varying(256) NOT NULL,
+                               phone character varying(32)
 );
 
 
@@ -75,10 +75,10 @@ ALTER TABLE public."user" OWNER TO webuser;
 --
 
 CREATE TABLE public.admin (
-    auths public.admin_auth,
-    department character varying(128)
+                              department character varying(128),
+                              roles public.admin_role[]
 )
-INHERITS (public."user");
+    INHERITS (public."user");
 
 
 ALTER TABLE public.admin OWNER TO webuser;
@@ -95,14 +95,14 @@ COMMENT ON TABLE public.admin IS 'admins';
 --
 
 CREATE TABLE public.board (
-    board_id integer NOT NULL,
-    title character varying(256) NOT NULL,
-    content text NOT NULL,
-    content_type character varying(8) NOT NULL,
-    writer integer NOT NULL,
-    reg_time timestamp without time zone DEFAULT now() NOT NULL,
-    category character varying(32),
-    last_updated timestamp without time zone NOT NULL
+                              board_id integer NOT NULL,
+                              title character varying(256) NOT NULL,
+                              content text NOT NULL,
+                              content_type character varying(8) NOT NULL,
+                              writer integer NOT NULL,
+                              reg_time timestamp without time zone DEFAULT now() NOT NULL,
+                              category character varying(32),
+                              last_updated timestamp without time zone NOT NULL
 );
 
 
@@ -135,12 +135,12 @@ ALTER SEQUENCE public.board_board_id_seq OWNED BY public.board.board_id;
 --
 
 CREATE TABLE public.board_comment (
-    comment_id bigint NOT NULL,
-    board_id integer NOT NULL,
-    writer integer NOT NULL,
-    comment character varying(1024) NOT NULL,
-    reg_time timestamp without time zone DEFAULT now() NOT NULL,
-    parent_comment bigint
+                                      comment_id bigint NOT NULL,
+                                      board_id integer NOT NULL,
+                                      writer integer NOT NULL,
+                                      comment character varying(1024) NOT NULL,
+                                      reg_time timestamp without time zone DEFAULT now() NOT NULL,
+                                      parent_comment bigint
 );
 
 
@@ -174,7 +174,7 @@ ALTER SEQUENCE public.board_comment_comment_id_seq OWNED BY public.board_comment
 CREATE TABLE public.client (
     last_login time without time zone
 )
-INHERITS (public."user");
+    INHERITS (public."user");
 
 
 ALTER TABLE public.client OWNER TO webuser;
@@ -255,7 +255,7 @@ SELECT pg_catalog.setval('public.board_comment_comment_id_seq', 1, false);
 -- Name: user_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: webuser
 --
 
-SELECT pg_catalog.setval('public.user_user_id_seq', 1, false);
+SELECT pg_catalog.setval('public.user_user_id_seq', 187, true);
 
 
 --
