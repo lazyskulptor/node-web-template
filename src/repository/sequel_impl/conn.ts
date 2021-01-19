@@ -1,11 +1,11 @@
 import {Dialect, Options, Sequelize, Transaction} from 'sequelize';
 
 const dbType = process.env.DB_TYPE as Dialect || 'postgres';
-const host = process.env.DB_HOST || '192.168.7.77';
+const host = process.env.DB_HOST || '127.0.0.1';
 const port = process.env.DB_PORT;
-const db = process.env.DB_NAME || 'lazyweb';
+const db = process.env.DB_NAME || 'web';
 const username = process.env.DB_USER || 'webuser';
-const pwd = process.env.DB_PWD || 'guswns1234';
+const pwd = process.env.DB_PWD || 'test_db_password';
 
 const dbOpt: Options = {
   host,
